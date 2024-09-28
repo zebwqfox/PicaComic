@@ -1,0 +1,39 @@
+name: Flutter Web Build
+
+on:
+  push:
+    branches:
+      - main  # 根据你的默认分支进行调整
+  pull_request:
+    branches:
+      - main  # 根据你的默认分支进行调整
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'  # 根据你的 Flutter 版本进行调整
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build Web
+      run: flutter build web --release
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: web-build
+        path: build/web
